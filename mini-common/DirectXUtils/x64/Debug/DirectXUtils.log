@@ -1,0 +1,26 @@
+﻿  compilation header save succeeded; see C:\Users\posejdon256\Downloads\lab1\mini-common\DirectXUtils\spritePS.h
+  compilation header save succeeded; see C:\Users\posejdon256\Downloads\lab1\mini-common\DirectXUtils\spriteVS.h
+  WICTextureLoader.cpp
+  windowApplication.cpp
+  window.cpp
+  viewFrustrum.cpp
+  vertexDef.cpp
+  spriteRenderer.cpp
+  model.cpp
+c:\users\posejdon256\downloads\lab1\mini-common\directxutils\model.cpp(88): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+c:\users\posejdon256\downloads\lab1\mini-common\directxutils\model.cpp(94): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  inputElements.cpp
+  mesh.cpp
+  material.cpp
+  inputLayoutManager.cpp
+  exceptions.cpp
+  effect.cpp
+  dxSwapChain.cpp
+  dxstructures.cpp
+  dxDevice.cpp
+  dxApplication.cpp
+  DDSTextureLoader.cpp
+  constantBuffer.cpp
+  camera.cpp
+  Generating Code...
+  DirectXUtils.vcxproj -> C:\Users\posejdon256\Downloads\lab1\in-domek\x64\Debug\DirectXUtils.lib
