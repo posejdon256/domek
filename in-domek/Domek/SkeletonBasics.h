@@ -62,16 +62,6 @@ private:
 	// Current Kinect
 	INuiSensor*             m_pNuiSensor;
 
-	// Skeletal drawing
-	ID2D1HwndRenderTarget*   m_pRenderTarget;
-	ID2D1SolidColorBrush*    m_pBrushJointTracked;
-	ID2D1SolidColorBrush*    m_pBrushJointInferred;
-	ID2D1SolidColorBrush*    m_pBrushBoneTracked;
-	ID2D1SolidColorBrush*    m_pBrushBoneInferred;
-	D2D1_POINT_2F            m_Points[NUI_SKELETON_POSITION_COUNT];
-
-	// Direct2D
-	ID2D1Factory*           m_pD2DFactory;
 
 	HANDLE                  m_pSkeletonStreamHandle;
 	HANDLE                  m_hNextSkeletonEvent;
@@ -93,17 +83,6 @@ private:
 	void                    ProcessSkeleton();
 
 	/// <summary>
-	/// Ensure necessary Direct2d resources are created
-	/// </summary>
-	/// <returns>S_OK if successful, otherwise an error code</returns>
-	HRESULT                 EnsureDirect2DResources();
-
-	/// <summary>
-	/// Dispose Direct2d resources 
-	/// </summary>
-	void                    DiscardDirect2DResources();
-
-	/// <summary>
 	/// Draws a bone line between two joints
 	/// </summary>
 	/// <param name="skel">skeleton to draw bones from</param>
@@ -118,15 +97,6 @@ private:
 	/// <param name="windowWidth">width (in pixels) of output buffer</param>
 	/// <param name="windowHeight">height (in pixels) of output buffer</param>
 	void                    DrawSkeleton(const NUI_SKELETON_DATA & skel, int windowWidth, int windowHeight);
-
-	/// <summary>
-	/// Converts a skeleton point to screen space
-	/// </summary>
-	/// <param name="skeletonPoint">skeleton point to tranform</param>
-	/// <param name="width">width (in pixels) of output buffer</param>
-	/// <param name="height">height (in pixels) of output buffer</param>
-	/// <returns>point in screen-space</returns>
-	D2D1_POINT_2F           SkeletonToScreen(Vector4 skeletonPoint, int width, int height);
 
 
 	/// <summary>

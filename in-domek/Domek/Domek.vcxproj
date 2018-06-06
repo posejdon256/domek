@@ -159,6 +159,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="SkeletonBasics.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="texturedEffect.h" />
   </ItemGroup>
   <ItemGroup>
