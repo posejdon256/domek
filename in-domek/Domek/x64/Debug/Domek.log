@@ -1,20 +1,13 @@
-﻿  compilation object save succeeded; see C:\Users\posejdon256\Downloads\lab1\in-domek\Domek\texturedPS.cso
-  compilation object save succeeded; see C:\Users\posejdon256\Downloads\lab1\in-domek\Domek\texturedVS.cso
-  main.cpp
-  texturedEffect.cpp
-  scene.cpp
-  c:\program files (x86)\windows kits\8.1\include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-c:\users\posejdon256\downloads\lab1\in-domek\domek\scene.cpp(494): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\posejdon256\downloads\lab1\in-domek\domek\scene.cpp(496): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\posejdon256\downloads\lab1\in-domek\domek\scene.cpp(498): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\posejdon256\downloads\lab1\in-domek\domek\scene.cpp(500): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\posejdon256\downloads\lab1\in-domek\domek\scene.cpp(502): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  SceletonBasics.cpp
-c:\users\posejdon256\downloads\lab1\in-domek\domek\sceletonbasics.cpp(320): warning C4101: 'i': unreferenced local variable
-  DataWindow.cpp
-  c:\program files (x86)\windows kits\8.1\include\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  collision.cpp
-  Generating Code...
-  Domek.vcxproj -> C:\Users\posejdon256\Downloads\lab1\in-domek\x64\Debug\Domek.exe
-  Domek.vcxproj -> C:\Users\posejdon256\Downloads\lab1\in-domek\x64\Debug\Domek.pdb (Partial PDB)
+﻿  scene.cpp
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(553): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(555): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(557): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(559): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(561): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(609): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(610): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(612): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(613): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Domek.vcxproj -> C:\Users\THINK\Documents\domek\in-domek\x64\Debug\Domek.exe
           1 file(s) copied.

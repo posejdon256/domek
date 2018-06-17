@@ -122,6 +122,51 @@ INScene::INScene(HINSTANCE hInstance, int wndWidth, int wndHeight, std::wstring 
 	m_collisions.SetObstacles(move(obstacles));
 
 	InitializeInput();
+
+	INuiSensor * pNuiSensor;
+
+	int iSensorCount = 0;
+	HRESULT hr = NuiGetSensorCount(&iSensorCount);
+	if (FAILED(hr))
+	{
+		return;
+	}
+
+	// Look at each Kinect sensor
+	for (int i = 0; i < iSensorCount; ++i)
+	{
+		// Create the sensor so we can check status, if we can't create it, move on to the next
+		hr = NuiCreateSensorByIndex(i, &pNuiSensor);
+		if (FAILED(hr))
+		{
+			continue;
+		}
+
+		// Get the status of the sensor, and if connected, then we can initialize it
+		hr = pNuiSensor->NuiStatus();
+		if (S_OK == hr)
+		{
+			m_pNuiSensor = pNuiSensor;
+			break;
+		}
+
+		// This sensor wasn't OK, so release it since we're not using it
+		pNuiSensor->Release();
+	}
+
+	if (NULL != m_pNuiSensor)
+	{
+		// Initialize the Kinect and specify that we'll be using skeleton
+		hr = m_pNuiSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
+		if (SUCCEEDED(hr))
+		{
+			// Create an event that will be signaled when skeleton data is available
+			m_hNextSkeletonEvent = CreateEventW(NULL, TRUE, FALSE, NULL);
+
+			// Open a skeleton stream to receive skeleton data
+			hr = m_pNuiSensor->NuiSkeletonTrackingEnable(m_hNextSkeletonEvent, 0);
+		}
+	}
 }
 bool INScene::ProcessMessage(WindowMessage& msg)
 {
@@ -259,6 +304,17 @@ INScene::~INScene()
 
 	di1->Release();
 	/*Release Direct Input resources here*/
+
+	if (m_pNuiSensor)
+	{
+		m_pNuiSensor->NuiShutdown();
+	}
+
+	if (m_hNextSkeletonEvent && (m_hNextSkeletonEvent != INVALID_HANDLE_VALUE))
+	{
+		CloseHandle(m_hNextSkeletonEvent);
+	}
+	if (m_pNuiSensor) m_pNuiSensor->Release();
 }
 int elementsIContains(string element) {
 	for (int i = 0; i < elementsI.size(); i++) {
@@ -269,6 +325,9 @@ int elementsIContains(string element) {
 	return -1;
 }
 void INScene::makeMove(char keyUpDown, char direction) {
+
+	//goW = false;
+
 	switch (keyUpDown)
 	{
 	case 'D':
@@ -505,12 +564,57 @@ void INScene::Update(const Clock& c)
 		openDoor = false;
 		ToggleDoor();
 	}
+
+	if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextSkeletonEvent, 0))
+	{
+		ProcessSkeleton(c);
+	}
+
 	XMFLOAT4X4 viewMtx;
 	XMStoreFloat4x4(&viewMtx, m_camera.getViewMatrix());
 	m_cbView.Update(m_device.context(), viewMtx);
 
 	UpdateDoor(static_cast<float>(c.getFrameTime()));
 }
+
+void INScene::ProcessSkeleton(const Clock& c)
+{
+	NUI_SKELETON_FRAME skeletonFrame = { 0 };
+
+	HRESULT hr = m_pNuiSensor->NuiSkeletonGetNextFrame(0, &skeletonFrame);
+	if (FAILED(hr))
+	{
+		return;
+	}
+
+	// smooth out the skeleton data
+	m_pNuiSensor->NuiTransformSmooth(&skeletonFrame, NULL);
+
+	for (int i = 0; i < NUI_SKELETON_COUNT; ++i)
+	{
+		NUI_SKELETON_TRACKING_STATE trackingState = skeletonFrame.SkeletonData[i].eTrackingState;
+
+		if (NUI_SKELETON_TRACKED == trackingState)
+		{
+			auto wl = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_WRIST_LEFT];
+			auto el = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_ELBOW_LEFT];
+			auto sl = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SHOULDER_LEFT];
+
+			auto wr = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_WRIST_RIGHT];
+			auto er = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_ELBOW_RIGHT];
+			auto sr = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SHOULDER_RIGHT];
+
+			float speed = 3;
+
+			if (wl.y > sl.y) MoveCharacter(0, speed * c.getFrameTime());
+			if (wl.y < el.y) MoveCharacter(0, speed * -c.getFrameTime());
+
+			if (wr.y > sr.y) MoveCharacter(speed * c.getFrameTime(), 0);
+			if (wr.y < er.y) MoveCharacter(speed *-c.getFrameTime(), 0);
+		}
+	}
+}
+
 void INScene::RenderText() const
 {
 	wstringstream str;

@@ -9,6 +9,7 @@
 #include "material.h"
 #include "constantBuffer.h"
 #include "inputLayoutManager.h"
+#include <NuiApi.h>
 #include <string>
 
 namespace mini
@@ -72,6 +73,11 @@ namespace mini
 			float m_doorAngVel;
 			DirectX::XMFLOAT4X4 m_doorTransform;
 			CollisionEngine m_collisions;
+
+			INuiSensor* m_pNuiSensor;
+			HANDLE                  m_pSkeletonStreamHandle;
+			HANDLE                  m_hNextSkeletonEvent;
+			void                    ProcessSkeleton(const Clock& c);
 		};
 	}
 }
