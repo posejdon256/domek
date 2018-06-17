@@ -9,6 +9,7 @@
 #include "material.h"
 #include "constantBuffer.h"
 #include "inputLayoutManager.h"
+#include <FaceTrackLib.h>
 #include <NuiApi.h>
 #include <string>
 
@@ -75,9 +76,17 @@ namespace mini
 			CollisionEngine m_collisions;
 
 			INuiSensor* m_pNuiSensor;
-			HANDLE                  m_pSkeletonStreamHandle;
-			HANDLE                  m_hNextSkeletonEvent;
-			void                    ProcessSkeleton(const Clock& c);
+			HANDLE m_pSkeletonStreamHandle;
+			HANDLE m_hNextSkeletonEvent;
+			void ProcessSkeleton(const Clock& c);
+
+			IFTFaceTracker *pFT;
+			IFTResult* pFTResult;
+
+			IFTImage* pColorFrame;
+			IFTImage* pDepthFrame;
+			HANDLE depthStream;
+			HANDLE rgbStream;
 		};
 	}
 }

@@ -1,13 +1,13 @@
 ﻿  scene.cpp
   c:\program files (x86)\windows kits\10\include\10.0.16299.0\um\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(553): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(555): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(557): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(559): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(561): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(609): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(610): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(612): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\think\documents\domek\in-domek\domek\scene.cpp(613): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(588): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(590): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(592): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(594): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(596): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(720): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(721): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(723): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(724): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Domek.vcxproj -> C:\Users\THINK\Documents\domek\in-domek\x64\Debug\Domek.exe
           1 file(s) copied.

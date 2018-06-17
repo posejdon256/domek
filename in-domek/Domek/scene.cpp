@@ -157,7 +157,7 @@ INScene::INScene(HINSTANCE hInstance, int wndWidth, int wndHeight, std::wstring 
 	if (NULL != m_pNuiSensor)
 	{
 		// Initialize the Kinect and specify that we'll be using skeleton
-		hr = m_pNuiSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
+		hr = m_pNuiSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_DEPTH | NUI_INITIALIZE_FLAG_USES_COLOR);
 		if (SUCCEEDED(hr))
 		{
 			// Create an event that will be signaled when skeleton data is available
@@ -165,8 +165,43 @@ INScene::INScene(HINSTANCE hInstance, int wndWidth, int wndHeight, std::wstring 
 
 			// Open a skeleton stream to receive skeleton data
 			hr = m_pNuiSensor->NuiSkeletonTrackingEnable(m_hNextSkeletonEvent, 0);
+			if (!SUCCEEDED(hr))
+				throw "aa";
+			hr = m_pNuiSensor->NuiImageStreamOpen(
+				NUI_IMAGE_TYPE_COLOR,            // Depth camera or rgb camera?
+				NUI_IMAGE_RESOLUTION_640x480,    // Image resolution
+				0,      // Image stream flags, e.g. near mode
+				2,      // Number of frames to buffer
+				NULL,   // Event handle
+				&rgbStream);
+			if (!SUCCEEDED(hr))
+				throw "aa";
+
+			hr = m_pNuiSensor->NuiImageStreamOpen(
+				NUI_IMAGE_TYPE_DEPTH,                     // Depth camera or rgb camera?
+				NUI_IMAGE_RESOLUTION_320x240,             // Image resolution
+				0,   // Image stream flags, e.g. near mode
+				2,      // Number of frames to buffer
+				NULL,   // Event handle
+				&depthStream);
+
+			if (!SUCCEEDED(hr))
+				throw "aa";
+
 		}
 	}
+
+	pFT = FTCreateFaceTracker();
+	FT_CAMERA_CONFIG videoCameraConfig = { 640, 480, NUI_CAMERA_COLOR_NOMINAL_FOCAL_LENGTH_IN_PIXELS };
+	FT_CAMERA_CONFIG depthCameraConfig = { 320, 240, NUI_CAMERA_DEPTH_NOMINAL_FOCAL_LENGTH_IN_PIXELS };
+	hr = pFT->Initialize(&videoCameraConfig, &depthCameraConfig, NULL, NULL);
+	hr = pFT->CreateFTResult(&pFTResult);
+
+
+	pColorFrame = FTCreateImage();
+	pDepthFrame = FTCreateImage();
+
+
 }
 bool INScene::ProcessMessage(WindowMessage& msg)
 {
@@ -569,6 +604,82 @@ void INScene::Update(const Clock& c)
 	{
 		ProcessSkeleton(c);
 	}
+
+
+	
+
+	NUI_IMAGE_FRAME imageFrameC, imageFrameD;
+	NUI_LOCKED_RECT LockedRectC, LockedRectD;
+	m_pNuiSensor->NuiImageStreamGetNextFrame(rgbStream, 0, &imageFrameC);
+	m_pNuiSensor->NuiImageStreamGetNextFrame(depthStream, 0, &imageFrameD);
+	INuiFrameTexture* textureC = imageFrameC.pFrameTexture;
+	INuiFrameTexture* textureD = imageFrameD.pFrameTexture;
+	textureC->LockRect(0, &LockedRectC, NULL, 0);
+	textureD->LockRect(0, &LockedRectD, NULL, 0);
+
+	pColorFrame->Attach(640, 480, LockedRectC.pBits, FTIMAGEFORMAT_UINT8_B8G8R8A8, 640 * 4);
+	pDepthFrame->Attach(320, 240, LockedRectD.pBits, FTIMAGEFORMAT_UINT16_D13P3, 320 * 2);
+
+	FT_SENSOR_DATA sensorData;
+	sensorData.pVideoFrame = pColorFrame;
+	sensorData.pDepthFrame = pDepthFrame;
+	sensorData.ZoomFactor = 1.0f;       // Not used must be 1.0
+	sensorData.ViewOffset = { 0 }; // Not used must be (0,0)
+
+	static bool isFaceTracked = false;
+
+	if (!isFaceTracked)
+	{
+		// Initiate face tracking.
+		// This call is more expensive and searches over the input RGB frame for a face.
+		HRESULT hr = pFT->StartTracking(&sensorData, NULL, NULL, pFTResult);
+		if (SUCCEEDED(hr) && SUCCEEDED(pFTResult->GetStatus()))
+		{
+			isFaceTracked = true;
+		}
+		else
+		{
+			// No faces found
+			isFaceTracked = false;
+		}
+	}
+	else
+	{
+		// Continue tracking. It uses a previously known face position.
+		// This call is less expensive than StartTracking()
+		HRESULT hr = pFT->ContinueTracking(&sensorData, NULL, pFTResult);
+		if (FAILED(hr) || FAILED(pFTResult->GetStatus()))
+		{
+			// Lost the face
+			isFaceTracked = false;
+		}
+	}
+	
+
+	textureC->UnlockRect(0);
+	textureD->UnlockRect(0);
+	m_pNuiSensor->NuiImageStreamReleaseFrame(rgbStream, &imageFrameC);
+	m_pNuiSensor->NuiImageStreamReleaseFrame(depthStream, &imageFrameD);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	XMFLOAT4X4 viewMtx;
 	XMStoreFloat4x4(&viewMtx, m_camera.getViewMatrix());
