@@ -604,13 +604,30 @@ void INScene::ProcessSkeleton(const Clock& c)
 			auto er = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_ELBOW_RIGHT];
 			auto sr = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SHOULDER_RIGHT];
 
-			float speed = 3;
+			float speed = 10;
 
 			if (wl.y > sl.y) MoveCharacter(0, speed * c.getFrameTime());
 			if (wl.y < el.y) MoveCharacter(0, speed * -c.getFrameTime());
 
 			if (wr.y > sr.y) MoveCharacter(speed * c.getFrameTime(), 0);
 			if (wr.y < er.y) MoveCharacter(speed *-c.getFrameTime(), 0);
+
+
+			auto hd = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HEAD];
+			auto sc = skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SHOULDER_CENTER];
+
+			float dz = hd.z - sc.z;
+	
+			float dx = hd.x - sc.x;
+			dz += 0.05;
+			if (abs(dz) < 0.05) dz = 0;
+			if (abs(dx) < 0.05) dx = 0;
+
+			dx *= 0.3;
+			dz *= 0.3;
+
+
+			m_camera.Rotate(-dz, dx);
 		}
 	}
 }

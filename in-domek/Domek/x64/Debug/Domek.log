@@ -9,5 +9,8 @@ c:\users\think\documents\domek\in-domek\domek\scene.cpp(609): warning C4244: 'ar
 c:\users\think\documents\domek\in-domek\domek\scene.cpp(610): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 c:\users\think\documents\domek\in-domek\domek\scene.cpp(612): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 c:\users\think\documents\domek\in-domek\domek\scene.cpp(613): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(622): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(626): warning C4305: '*=': truncation from 'double' to 'float'
+c:\users\think\documents\domek\in-domek\domek\scene.cpp(627): warning C4305: '*=': truncation from 'double' to 'float'
   Domek.vcxproj -> C:\Users\THINK\Documents\domek\in-domek\x64\Debug\Domek.exe
           1 file(s) copied.
